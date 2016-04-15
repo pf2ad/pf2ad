@@ -154,7 +154,7 @@ function samba_write_rcfile() {
 
     $settings = $config['installedpackages']['samba3']['config'][0];
 
-    if (isset($post['samba3enable']) {
+    if (isset($post['samba3enable'])) {
         $samba_conf = SAMBA3CONF;
         $rc = array();
         $rc['file'] = 'samba3.sh';
