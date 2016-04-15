@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160415006'
+VERSION='20160415010'
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
