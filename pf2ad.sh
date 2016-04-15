@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160415016'
+VERSION='20160415018'
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
@@ -74,14 +74,8 @@ if [ ! "$(/usr/local/sbin/pfSsh.php playback listpkg | grep 'squid')" ]; then
 fi
 
 cd /usr/local/pkg
-if [ "$(md5 -q squid.inc)" != "55e6a04e9d3867a46443e7a336fce7d0" ]; then
-	fetch -o squid.inc -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/squid.inc
-fi
-if [ "$(md5 -q squid_js.inc)" != "4fb3d0a63fce3ee291e69f9791a77189" ]; then
-	fetch -o squid_js.inc -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/squid_js.inc
-fi
-if [ "$(md5 -q squid_auth.xml)" != "f16ba584bc86093e00b38a86b8a309ef" ]; then
-	fetch -o squid_auth.xml -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/squid_auth.xml
+if ! fetch -o - -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/squid_ntlm.patch | patch -p0 --dry-run -t | grep "Reversed"; then
+    fetch -o - -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/squid_ntlm.patch | patch -b -p0
 fi
 
 if [ ! -f "/usr/local/etc/smb.conf" ]; then
