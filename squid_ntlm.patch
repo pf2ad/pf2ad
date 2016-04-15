@@ -1,21 +1,21 @@
 diff --git a/squid.inc b/squid.inc
 index 3d68a9a..ea4efbc 100644
---- a/squid.inc
-+++ b/squid.inc
+--- squid.inc
++++ squid.inc
 @@ -715,7 +715,7 @@ function squid_upgrade_config() {
- 
+
  	/* migrate reverse proxy settings */
  	squid_reverse_upgrade_config();
--	
+-
 +
  	/* unset broken antivirus settings */
  	squid_antivirus_upgrade_config();
- 
+
 @@ -793,7 +793,7 @@ function squid_validate_general($post, &$input_errors) {
  		$input_errors[] = "You can not run Squid on the same port as the pfSense WebGUI";
  	}
  	unset($port, $webgui_port);
--	
+-
 +
  	if ($post['transparent_proxy'] == 'on') {
  		if (empty($post['transparent_active_interface'])) {
@@ -24,14 +24,14 @@ index 3d68a9a..ea4efbc 100644
  		}
  	}
  	unset($host, $hosts);
--	
+-
 +
  	foreach (array('defined_ip_proxy_off_dest') as $hosts) {
  		foreach (explode(";", $post[$hosts]) as $host) {
  			$host = trim($host);
 @@ -1081,7 +1081,7 @@ function squid_validate_auth($post, &$input_errors) {
  	unset($num_fields);
- 
+
  	$auth_method = $post['auth_method'];
 -	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp')) {
 +	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp') && ($auth_method != 'ntlm')) {
@@ -58,8 +58,8 @@ index 3d68a9a..ea4efbc 100644
  		$conf .= <<< EOD
 diff --git a/squid_auth.xml b/squid_auth.xml
 index e0f2b7b..08b6ae8 100644
---- a/squid_auth.xml
-+++ b/squid_auth.xml
+--- squid_auth.xml
++++ squid_auth.xml
 @@ -105,6 +105,7 @@
  				<option><name>RADIUS</name><value>radius</value></option>
  				<option><name>Captive Portal</name><value>cp</value></option>
@@ -103,8 +103,8 @@ index e0f2b7b..08b6ae8 100644
  		</field>
 diff --git a/squid_js.inc b/squid_js.inc
 index 33f1923..655428b 100644
---- a/squid_js.inc
-+++ b/squid_js.inc
+--- squid_js.inc
++++ squid_js.inc
 @@ -73,6 +73,9 @@ function on_auth_method_changed() {
  	document.iform.auth_ttl.disabled = 1;
  	document.iform.unrestricted_auth.disabled = 1;
