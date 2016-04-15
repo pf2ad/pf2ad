@@ -52,18 +52,16 @@ function get_real_interface_address($iface) {
 }
 
 function validate_form_samba3($post, &$input_errors) {
-
-        // Member
-        if (isset($post['samba3enable'])) {
-            if ( $post['member_domain'] == "" )
-                $input_errors[] = "The field 'Domain' is required.";
-            if ( $post['member_workgroup'] == "" )
-                $input_errors[] = "The field 'Workgroup' is required.";
-            if ( $post['member_username'] == "" )
-                $input_errors[] = "The field 'Username Administrator' is required.";
-            if ( $post['member_password'] == "" )
-                $input_errors[] = "The field 'Administrator Password' is required.";
-        }
+    // Member
+    if (isset($post['samba3enable'])) {
+        if ( $post['member_domain'] == "" )
+            $input_errors[] = "The field 'Domain' is required.";
+        if ( $post['member_workgroup'] == "" )
+            $input_errors[] = "The field 'Workgroup' is required.";
+        if ( $post['member_username'] == "" )
+            $input_errors[] = "The field 'Username Administrator' is required.";
+        if ( $post['member_password'] == "" )
+            $input_errors[] = "The field 'Administrator Password' is required.";
     }
 }
 
