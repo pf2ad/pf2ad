@@ -1,7 +1,7 @@
 <?php
 # ------------------------------------------------------------------------------
 /*  samba3.inc
-    Copyright (C) 2013 Luiz Gustavo <gugabsd@mundounix.com.br>
+    Copyright (C) 2013-2016 Luiz Gustavo <me@luizgustavo.pro.br>
     All rights reserved.
 
     part of pfSense (www.pfSense.com)
@@ -44,9 +44,6 @@ define('DC_BASE', "/var/db/samba3/private/sam.ldb");
 # ------------------------------------------------------------------------------
 # Load the javascript jquery lib
 # ------------------------------------------------------------------------------
-function load_jquery(){
-        print "<script src=\"/javascript/jquery-1.9.1.min.js\"></script>";
-}
 
 function change_role() {
 
@@ -54,246 +51,246 @@ function change_role() {
 <script language="JavaScript">
 <!--
 function do_role() {
-    switch ($("#server_role").val()) {
+    switch (jQuery("#server_role").val()) {
         case 'dc':
-            $("tr>td>#interface").parent().parent().show();
+            jQuery("tr>td>#interface").parent().parent().show();
 
 EOD;
     if (file_exists(DC_BASE)) {
         $javascript .= <<<EOD
             // DC
-            $("td[class='listtopic']:contains('Domain Controller Options'):first").html("<table width='100%'><tr><td>Domain Controller Options</td><td align='right'><button id='remove_config' name='remove_config' type='button'>Remove config</button></td></tr></table>").show();
-            $("tr>td>#dc_domain").parent().parent().show();
-            $("#dc_domain").attr("readonly", "readonly");
-            $("tr>td>#dc_workgroup").parent().parent().show();
-            $("#dc_workgroup").attr("readonly", "readonly");
-            $("tr>td>#dc_password").parent().parent().show();
-            $("#dc_password").attr("readonly", "readonly");
+            jQuery("td[class='listtopic']:contains('Domain Controller Options'):first").html("<table width='100%'><tr><td>Domain Controller Options</td><td align='right'><button id='remove_config' name='remove_config' type='button'>Remove config</button></td></tr></table>").show();
+            jQuery("tr>td>#dc_domain").parent().parent().show();
+            jQuery("#dc_domain").attr("readonly", "readonly");
+            jQuery("tr>td>#dc_workgroup").parent().parent().show();
+            jQuery("#dc_workgroup").attr("readonly", "readonly");
+            jQuery("tr>td>#dc_password").parent().parent().show();
+            jQuery("#dc_password").attr("readonly", "readonly");
 
-            $("option[value='join_dc']").attr("disabled", "disabled");
-            $("option[value='rodc']").attr("disabled", "disabled");
-            $("option[value='member']").attr("disabled", "disabled");
+            jQuery("option[value='join_dc']").attr("disabled", "disabled");
+            jQuery("option[value='rodc']").attr("disabled", "disabled");
+            jQuery("option[value='member']").attr("disabled", "disabled");
 EOD;
     } else {
         $javascript .= <<< EOD
             // DC
-            $("tr>td[class='listtopic']:contains('Domain Controller Options')").show();
-            $("tr>td>#dc_domain").parent().parent().show();
-            $("#dc_domain").focus();
-            $("tr>td>#dc_workgroup").parent().parent().show();
-            $("tr>td>#dc_password").parent().parent().show();
+            jQuery("tr>td[class='listtopic']:contains('Domain Controller Options')").show();
+            jQuery("tr>td>#dc_domain").parent().parent().show();
+            jQuery("#dc_domain").focus();
+            jQuery("tr>td>#dc_workgroup").parent().parent().show();
+            jQuery("tr>td>#dc_password").parent().parent().show();
 EOD;
     }
 
     $javascript .= <<< EOD
 
             // enable tabs
-            $("li:contains('DNS Server')").show();
-            $("li:contains('User Mgmt')").show();
-            $("li:contains('Shares')").show();
+            jQuery("li:contains('DNS Server')").show();
+            jQuery("li:contains('User Mgmt')").show();
+            jQuery("li:contains('Shares')").show();
 
             // DC Additional
-            $("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
-            $("tr>td>#adc_domain").parent().parent().hide();
-            $("tr>td>#adc_server").parent().parent().hide();
-            $("tr>td>#adc_site").parent().parent().hide();
-            $("tr>td>#adc_username").parent().parent().hide();
-            $("tr>td>#adc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
+            jQuery("tr>td>#adc_domain").parent().parent().hide();
+            jQuery("tr>td>#adc_server").parent().parent().hide();
+            jQuery("tr>td>#adc_site").parent().parent().hide();
+            jQuery("tr>td>#adc_username").parent().parent().hide();
+            jQuery("tr>td>#adc_password").parent().parent().hide();
 
             // RODC
-            $("tr>td[class='listtopic']:contains('RODC Options')").hide();
-            $("tr>td>#rodc_domain").parent().parent().hide();
-            $("tr>td>#rodc_server").parent().parent().hide();
-            $("tr>td>#rodc_site").parent().parent().hide();
-            $("tr>td>#rodc_username").parent().parent().hide();
-            $("tr>td>#rodc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('RODC Options')").hide();
+            jQuery("tr>td>#rodc_domain").parent().parent().hide();
+            jQuery("tr>td>#rodc_server").parent().parent().hide();
+            jQuery("tr>td>#rodc_site").parent().parent().hide();
+            jQuery("tr>td>#rodc_username").parent().parent().hide();
+            jQuery("tr>td>#rodc_password").parent().parent().hide();
 
             // Domain Member
-            $("tr>td[class='listtopic']:contains('Domain Member')").hide();
-            $("tr>td>#member_domain").parent().parent().hide();
-            $("tr>td>#member_workgroup").parent().parent().hide();
-            $("tr>td>#member_username").parent().parent().hide();
-            $("tr>td>#member_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Member')").hide();
+            jQuery("tr>td>#member_domain").parent().parent().hide();
+            jQuery("tr>td>#member_workgroup").parent().parent().hide();
+            jQuery("tr>td>#member_username").parent().parent().hide();
+            jQuery("tr>td>#member_password").parent().parent().hide();
 
             break;
 
         case 'join_dc':
-            $("tr>td>#interface").parent().parent().show();
+            jQuery("tr>td>#interface").parent().parent().show();
 
             // enable tabs
-            $("li:contains('DNS Server')").show();
-            $("li:contains('User Mgmt')").show();
-            $("li:contains('Shares')").show();
+            jQuery("li:contains('DNS Server')").show();
+            jQuery("li:contains('User Mgmt')").show();
+            jQuery("li:contains('Shares')").show();
 
             // DC
-            $("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
-            $("tr>td>#dc_domain").parent().parent().hide();
-            $("tr>td>#dc_workgroup").parent().parent().hide();
-            $("tr>td>#dc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
+            jQuery("tr>td>#dc_domain").parent().parent().hide();
+            jQuery("tr>td>#dc_workgroup").parent().parent().hide();
+            jQuery("tr>td>#dc_password").parent().parent().hide();
 
             // DC Additional
-            $("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").show();
-            $("tr>td>#adc_domain").parent().parent().show();
-            $("tr>td>#adc_server").parent().parent().show();
-            $("tr>td>#adc_site").parent().parent().show();
-            $("tr>td>#adc_username").parent().parent().show();
-            $("tr>td>#adc_password").parent().parent().show();
+            jQuery("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").show();
+            jQuery("tr>td>#adc_domain").parent().parent().show();
+            jQuery("tr>td>#adc_server").parent().parent().show();
+            jQuery("tr>td>#adc_site").parent().parent().show();
+            jQuery("tr>td>#adc_username").parent().parent().show();
+            jQuery("tr>td>#adc_password").parent().parent().show();
 
             // RODC
-            $("tr>td[class='listtopic']:contains('RODC Options')").hide();
-            $("tr>td>#rodc_domain").parent().parent().hide();
-            $("tr>td>#rodc_server").parent().parent().hide();
-            $("tr>td>#rodc_site").parent().parent().hide();
-            $("tr>td>#rodc_username").parent().parent().hide();
-            $("tr>td>#rodc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('RODC Options')").hide();
+            jQuery("tr>td>#rodc_domain").parent().parent().hide();
+            jQuery("tr>td>#rodc_server").parent().parent().hide();
+            jQuery("tr>td>#rodc_site").parent().parent().hide();
+            jQuery("tr>td>#rodc_username").parent().parent().hide();
+            jQuery("tr>td>#rodc_password").parent().parent().hide();
 
             // Domain Member
-            $("tr>td[class='listtopic']:contains('Domain Member')").hide();
-            $("tr>td>#member_domain").parent().parent().hide();
-            $("tr>td>#member_workgroup").parent().parent().hide();
-            $("tr>td>#member_username").parent().parent().hide();
-            $("tr>td>#member_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Member')").hide();
+            jQuery("tr>td>#member_domain").parent().parent().hide();
+            jQuery("tr>td>#member_workgroup").parent().parent().hide();
+            jQuery("tr>td>#member_username").parent().parent().hide();
+            jQuery("tr>td>#member_password").parent().parent().hide();
 
             break;
 
         case 'rodc':
-            $("tr>td>#interface").parent().parent().show();
+            jQuery("tr>td>#interface").parent().parent().show();
 
             // enable tabs
-            $("li:contains('DNS Server')").show();
-            $("li:contains('User Mgmt')").show();
-            $("li:contains('Shares')").show();
+            jQuery("li:contains('DNS Server')").show();
+            jQuery("li:contains('User Mgmt')").show();
+            jQuery("li:contains('Shares')").show();
 
             // DC
-            $("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
-            $("tr>td>#dc_domain").parent().parent().hide();
-            $("tr>td>#dc_workgroup").parent().parent().hide();
-            $("tr>td>#dc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
+            jQuery("tr>td>#dc_domain").parent().parent().hide();
+            jQuery("tr>td>#dc_workgroup").parent().parent().hide();
+            jQuery("tr>td>#dc_password").parent().parent().hide();
 
             // DC Additional
-            $("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
-            $("tr>td>#adc_domain").parent().parent().hide();
-            $("tr>td>#adc_server").parent().parent().hide();
-            $("tr>td>#adc_site").parent().parent().hide();
-            $("tr>td>#adc_username").parent().parent().hide();
-            $("tr>td>#adc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
+            jQuery("tr>td>#adc_domain").parent().parent().hide();
+            jQuery("tr>td>#adc_server").parent().parent().hide();
+            jQuery("tr>td>#adc_site").parent().parent().hide();
+            jQuery("tr>td>#adc_username").parent().parent().hide();
+            jQuery("tr>td>#adc_password").parent().parent().hide();
 
             // RODC
-            $("tr>td[class='listtopic']:contains('RODC Options')").show();
-            $("tr>td>#rodc_domain").parent().parent().show();
-            $("tr>td>#rodc_server").parent().parent().show();
-            $("tr>td>#rodc_site").parent().parent().show();
-            $("tr>td>#rodc_username").parent().parent().show();
-            $("tr>td>#rodc_password").parent().parent().show();
+            jQuery("tr>td[class='listtopic']:contains('RODC Options')").show();
+            jQuery("tr>td>#rodc_domain").parent().parent().show();
+            jQuery("tr>td>#rodc_server").parent().parent().show();
+            jQuery("tr>td>#rodc_site").parent().parent().show();
+            jQuery("tr>td>#rodc_username").parent().parent().show();
+            jQuery("tr>td>#rodc_password").parent().parent().show();
 
             // Domain Member
-            $("tr>td[class='listtopic']:contains('Domain Member')").hide();
-            $("tr>td>#member_domain").parent().parent().hide();
-            $("tr>td>#member_workgroup").parent().parent().hide();
-            $("tr>td>#member_username").parent().parent().hide();
-            $("tr>td>#member_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Member')").hide();
+            jQuery("tr>td>#member_domain").parent().parent().hide();
+            jQuery("tr>td>#member_workgroup").parent().parent().hide();
+            jQuery("tr>td>#member_username").parent().parent().hide();
+            jQuery("tr>td>#member_password").parent().parent().hide();
 
             break;
 
         case 'member':
-            $("tr>td>#interface").parent().parent().show();
+            jQuery("tr>td>#interface").parent().parent().show();
 
             // disable tabs
-            $("li:contains('DNS Server')").hide();
-            $("li:contains('User Mgmt')").hide();
-            $("li:contains('Shares')").show();
+            jQuery("li:contains('DNS Server')").hide();
+            jQuery("li:contains('User Mgmt')").hide();
+            jQuery("li:contains('Shares')").show();
 
             // DC
-            $("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
-            $("tr>td>#dc_domain").parent().parent().hide();
-            $("tr>td>#dc_workgroup").parent().parent().hide();
-            $("tr>td>#dc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
+            jQuery("tr>td>#dc_domain").parent().parent().hide();
+            jQuery("tr>td>#dc_workgroup").parent().parent().hide();
+            jQuery("tr>td>#dc_password").parent().parent().hide();
 
             // DC Additional
-            $("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
-            $("tr>td>#adc_domain").parent().parent().hide();
-            $("tr>td>#adc_server").parent().parent().hide();
-            $("tr>td>#adc_site").parent().parent().hide();
-            $("tr>td>#adc_username").parent().parent().hide();
-            $("tr>td>#adc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
+            jQuery("tr>td>#adc_domain").parent().parent().hide();
+            jQuery("tr>td>#adc_server").parent().parent().hide();
+            jQuery("tr>td>#adc_site").parent().parent().hide();
+            jQuery("tr>td>#adc_username").parent().parent().hide();
+            jQuery("tr>td>#adc_password").parent().parent().hide();
 
             // RODC
-            $("tr>td[class='listtopic']:contains('RODC Options')").hide();
-            $("tr>td>#rodc_domain").parent().parent().hide();
-            $("tr>td>#rodc_server").parent().parent().hide();
-            $("tr>td>#rodc_site").parent().parent().hide();
-            $("tr>td>#rodc_username").parent().parent().hide();
-            $("tr>td>#rodc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('RODC Options')").hide();
+            jQuery("tr>td>#rodc_domain").parent().parent().hide();
+            jQuery("tr>td>#rodc_server").parent().parent().hide();
+            jQuery("tr>td>#rodc_site").parent().parent().hide();
+            jQuery("tr>td>#rodc_username").parent().parent().hide();
+            jQuery("tr>td>#rodc_password").parent().parent().hide();
 
             // Domain Member
-            $("tr>td[class='listtopic']:contains('Domain Member')").show();
-            $("tr>td>#member_domain").parent().parent().show();
-            $("tr>td>#member_workgroup").parent().parent().show();
-            $("tr>td>#member_username").parent().parent().show();
-            $("tr>td>#member_password").parent().parent().show();
+            jQuery("tr>td[class='listtopic']:contains('Domain Member')").show();
+            jQuery("tr>td>#member_domain").parent().parent().show();
+            jQuery("tr>td>#member_workgroup").parent().parent().show();
+            jQuery("tr>td>#member_username").parent().parent().show();
+            jQuery("tr>td>#member_password").parent().parent().show();
 
             break;
 
         default:
-            $("tr>td>#interface").parent().parent().hide();
+            jQuery("tr>td>#interface").parent().parent().hide();
 EOD;
 
     if (file_exists(DC_BASE)) {
         $javascript .= <<<EOD
-            $("option[value='join_dc']").attr("disabled", "disabled");
-            $("option[value='rodc']").attr("disabled", "disabled");
-            $("option[value='member']").attr("disabled", "disabled");
+            jQuery("option[value='join_dc']").attr("disabled", "disabled");
+            jQuery("option[value='rodc']").attr("disabled", "disabled");
+            jQuery("option[value='member']").attr("disabled", "disabled");
 EOD;
     }
     $javascript .= <<<EOD
 
             // disable tabs
-            $("li:contains('DNS Server')").hide();
-            $("li:contains('User Mgmt')").hide();
-            $("li:contains('Shares')").hide();
+            jQuery("li:contains('DNS Server')").hide();
+            jQuery("li:contains('User Mgmt')").hide();
+            jQuery("li:contains('Shares')").hide();
 
             // DC
-            $("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
-            $("tr>td>#dc_domain").parent().parent().hide();
-            $("tr>td>#dc_workgroup").parent().parent().hide();
-            $("tr>td>#dc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Controller Options')").hide();
+            jQuery("tr>td>#dc_domain").parent().parent().hide();
+            jQuery("tr>td>#dc_workgroup").parent().parent().hide();
+            jQuery("tr>td>#dc_password").parent().parent().hide();
 
             // DC Additional
-            $("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
-            $("tr>td>#adc_domain").parent().parent().hide();
-            $("tr>td>#adc_server").parent().parent().hide();
-            $("tr>td>#adc_site").parent().parent().hide();
-            $("tr>td>#adc_username").parent().parent().hide();
-            $("tr>td>#adc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Additional Domain Controller Options')").hide();
+            jQuery("tr>td>#adc_domain").parent().parent().hide();
+            jQuery("tr>td>#adc_server").parent().parent().hide();
+            jQuery("tr>td>#adc_site").parent().parent().hide();
+            jQuery("tr>td>#adc_username").parent().parent().hide();
+            jQuery("tr>td>#adc_password").parent().parent().hide();
 
             // RODC
-            $("tr>td[class='listtopic']:contains('RODC Options')").hide();
-            $("tr>td>#rodc_domain").parent().parent().hide();
-            $("tr>td>#rodc_server").parent().parent().hide();
-            $("tr>td>#rodc_site").parent().parent().hide();
-            $("tr>td>#rodc_username").parent().parent().hide();
-            $("tr>td>#rodc_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('RODC Options')").hide();
+            jQuery("tr>td>#rodc_domain").parent().parent().hide();
+            jQuery("tr>td>#rodc_server").parent().parent().hide();
+            jQuery("tr>td>#rodc_site").parent().parent().hide();
+            jQuery("tr>td>#rodc_username").parent().parent().hide();
+            jQuery("tr>td>#rodc_password").parent().parent().hide();
 
             // Domain Member
-            $("tr>td[class='listtopic']:contains('Domain Member')").hide();
-            $("tr>td>#member_domain").parent().parent().hide();
-            $("tr>td>#member_workgroup").parent().parent().hide();
-            $("tr>td>#member_username").parent().parent().hide();
-            $("tr>td>#member_password").parent().parent().hide();
+            jQuery("tr>td[class='listtopic']:contains('Domain Member')").hide();
+            jQuery("tr>td>#member_domain").parent().parent().hide();
+            jQuery("tr>td>#member_workgroup").parent().parent().hide();
+            jQuery("tr>td>#member_username").parent().parent().hide();
+            jQuery("tr>td>#member_password").parent().parent().hide();
 
             break;
     }
 }
-$(function() {
-    $("#server_role").change(function(){
+jQuery(function() {
+    jQuery("#server_role").change(function(){
         do_role();
     });
     do_role();
 
-    $("#remove_config").click(function() {
-        $("form[name='iform']").append('<input type="hidden" name="del_config" value="true">');
-        $("#server_role").val("disabled");
-        $("form[name='iform']").submit();
+    jQuery("#remove_config").click(function() {
+        jQuery("form[name='iform']").append('<input type="hidden" name="del_config" value="true">');
+        jQuery("#server_role").val("disabled");
+        jQuery("form[name='iform']").submit();
     });
 
 });

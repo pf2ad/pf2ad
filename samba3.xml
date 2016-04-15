@@ -7,9 +7,9 @@
 /* $Id$ */
 /* ========================================================================== */
 /*
-    samba4.xml
+    samba3.xml
     part of pfSense (http://www.pfSense.com)
-    Copyright (C) 2013 Luiz Gustavo <gugabsd@mundounix.com.br>
+    Copyright (C) 2013-2016 Luiz Gustavo <me@luizgustavo.pro.br>
     All rights reserved.
 
     Based on m0n0wall (http://m0n0.ch/wall)
@@ -254,7 +254,6 @@
         </field>
 	</fields>
     <custom_php_after_head_command>
-            load_jquery();
             change_role();
     </custom_php_after_head_command>
 	<custom_php_command_before_form>

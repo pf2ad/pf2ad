@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160414007'
+VERSION='20160415005'
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
@@ -40,26 +40,29 @@ EOF
 /usr/sbin/pkg update -r pf2ad
 /usr/sbin/pkg install -r pf2ad net/samba36 2> /dev/null
 
-echo 'samba_enable="YES"' > /etc/rc.conf.d/samba
-echo 'winbindd_enable="YES"' > /etc/rc.conf.d/winbindd
-
-cd /usr/local/etc/rc.d/
-if [ ! -f "samba.sh" ]; then
-	ln -s samba samba.sh
-fi
-
 mkdir -p /var/db/samba/winbindd_privileged
 chown -R :proxy /var/db/samba/winbindd_privileged
 chmod -R 0750 /var/db/samba/winbindd_privileged
 
 fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/samba3.inc
 fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/samba3.xml
-fetch -o /usr/local/www/javascript -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/jquery-1.9.1.min.js
 
-cd /usr/local/www
-awk '/gettext\("SNMP"\)/{print "$services_menu[] = array(\"Samba (AD)\", \"/pkg_edit.php?xml=samba3.xml&id=0\");"}1' head.inc > /tmp/head.inc.tmp
-mv /tmp/head.inc.tmp head.inc
-
+/usr/local/sbin/pfSsh.php <<EOF
+\$config['installedpackages']['service'][0] = array(
+  'name' => 'samba3',
+  'rcfile' => 'samba3.sh',
+  'executable' => 'smbd',
+  'description' => 'Samba 3 daemon'
+);
+\$config['installedpackages']['menu'][0] = array(
+  'name' => 'Samba3 (AD)',
+  'section' => 'Services',
+  'url' => '/pkg_edit.php?xml=samba3.xml'
+);
+write_config();
+exec;
+exit
+EOF
 
 if [ ! "$(/usr/local/sbin/pfSsh.php playback listpkg | grep 'squid')" ]; then
 	/usr/local/sbin/pfSsh.php playback installpkg "squid"
