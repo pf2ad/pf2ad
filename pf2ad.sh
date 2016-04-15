@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160415015'
+VERSION='20160415016'
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
@@ -24,6 +24,7 @@ export ASSUME_ALWAYS_YES
 /usr/sbin/pkg update
 
 # Lock packages necessary
+/usr/sbin/pkg lock pkg
 /usr/sbin/pkg lock pfSense-2.3
 /usr/sbin/pkg lock dnsmasq-devel
 
@@ -39,6 +40,10 @@ EOF
 
 /usr/sbin/pkg update -r pf2ad
 /usr/sbin/pkg install -r pf2ad net/samba36 2> /dev/null
+
+/usr/sbin/pkg unlock pkg
+/usr/sbin/pkg unlock pfSense-2.3
+/usr/sbin/pkg unlock dnsmasq-devel
 
 mkdir -p /var/db/samba/winbindd_privileged
 chown -R :proxy /var/db/samba/winbindd_privileged
