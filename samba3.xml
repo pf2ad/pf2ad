@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+        <copyright>
+        <![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    samba4.xml
+    part of pfSense (http://www.pfSense.com)
+    Copyright (C) 2013 Luiz Gustavo <gugabsd@mundounix.com.br>
+    All rights reserved.
+
+    Based on m0n0wall (http://m0n0.ch/wall)
+    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+    All rights reserved.
+                                                                              */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+        ]]>
+        </copyright>
+    <description>Describe your package here</description>
+    <requirements>Describe your package requirements here</requirements>
+    <faq>Currently there are no FAQ items provided.</faq>
+	<name>samba3</name>
+	<version>3.6.16</version>
+	<title>Samba is a Active Directory compatible Domain Controller</title>
+	<include_file>/usr/local/pkg/samba3.inc</include_file>
+	<menu>
+		<name>Samba Setup</name>
+		<tooltiptext>Modify Samba settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=samba3.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>samba4</name>
+		<rcfile>samba3.sh</rcfile>
+		<executable>samba3</executable>
+		<description>Samba3 server Service</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Server Role</text>
+			<url>/pkg_edit.php?xml=samba3.xml&amp;id=0</url>
+			<active/>
+		</tab>
+	</tabs>
+	<!-- Installation -->
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>http://www.mundounix.com.br/~gugabsd/pfsense/samba3/samba3.inc</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<fielddescr>Server Role:</fielddescr>
+			<fieldname>server_role</fieldname>
+			<description>Choose the server role for use with Samba4 to you network.</description>
+			<type>select</type>
+                        <options>
+                                <option>
+                                        <name>Disabled</name>
+                                        <value>disabled</value>
+                                </option>
+<!-- disabled
+                                <option>
+                                        <name>Domain Controller</name>
+                                        <value>dc</value>
+                                </option>
+                                <option>
+                                        <name>Additional Domain Controller</name>
+                                        <value>join_dc</value>
+                                </option>
+                                <option>
+                                        <name>Ready Only Domain Controller</name>
+                                        <value>rodc</value>
+                                </option>
+-->
+                                <option>
+                                        <name>Member of Domain</name>
+                                        <value>member</value>
+                                </option>
+                        </options>
+			<required/>
+		</field>
+                <field>
+                        <fielddescr>Listen interface</fielddescr>
+                        <fieldname>interface</fieldname>
+                        <description>The interface(s) the Samba4 server will bind to.</description>
+                        <type>interfaces_selection</type>
+                        <default_value>lan</default_value>
+                        <multiple/>
+                </field>
+                <field>
+                        <name>Domain Controller Options</name>
+                        <type>listtopic</type>
+                </field>
+		<field>
+			<fielddescr>Domain</fielddescr>
+			<fieldname>dc_domain</fieldname>
+			<description>Set the domain to use in Domain Controller (i.e. test.com).</description>
+			<type>input</type>
+            <size>60</size>
+		</field>
+		<field>
+			<fielddescr>Workgroup</fielddescr>
+			<fieldname>dc_workgroup</fieldname>
+			<description>Workgroup to use was Netbios name for you network (i.e. TEST)</description>
+			<type>input</type>
+            <size>40</size>
+		</field>
+		<field>
+			<fielddescr>Administrator Password</fielddescr>
+			<fieldname>dc_password</fieldname>
+			<description>Set a password for Administrator Domain (Use a password with letters and numbers - show the politic passwords)</description>
+			<type>password</type>
+            <size>40</size>
+		</field>
+        <field>
+                <name>Additional Domain Controller Options</name>
+                <type>listtopic</type>
+        </field>
+		<field>
+			<fielddescr>Domain</fielddescr>
+			<fieldname>adc_domain</fieldname>
+			<description>Specify the domain to add this DC (i.e. test.com)</description>
+			<type>input</type>
+          		<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Target Server</fielddescr>
+			<fieldname>adc_server</fieldname>
+			<description>Set a ip ou hostname to use for add this DC</description>
+			<type>input</type>
+        		<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Target Site</fielddescr>
+			<fieldname>adc_site</fieldname>
+			<description>Set a site to use in this DC</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Username Administrator</fielddescr>
+			<fieldname>adc_username</fieldname>
+			<description>Username with previlegies to add this DC in Domain</description>
+			<type>input</type>
+			<size>40</size>
+			<default_value>Administrator</default_value>
+		</field>
+		<field>
+			<fielddescr>Password</fielddescr>
+			<fieldname>adc_password</fieldname>
+			<description>Password for the username with previlegies to add this DC</description>
+			<type>password</type>
+			<size>40</size>
+		</field>
+        <field>
+                <name>RODC Options</name>
+                <type>listtopic</type>
+        </field>
+        <field>
+                <fielddescr>Domain</fielddescr>
+                <fieldname>rodc_domain</fieldname>
+                <description>Specify the domain to add this DC (i.e. test.com)</description>
+                <type>input</type>
+                <size>60</size>
+        </field>
+        <field>
+                <fielddescr>Target Server</fielddescr>
+                <fieldname>rodc_server</fieldname>
+                <description>Set a ip ou hostname to use for add this DC</description>
+                <type>input</type>
+                <size>60</size>
+        </field>
+        <field>
+                <fielddescr>Target Site</fielddescr>
+                <fieldname>rodc_site</fieldname>
+                <description>Set a site to use in this DC</description>
+                <type>input</type>
+                <size>60</size>
+        </field>
+        <field>
+                <fielddescr>Username Administrator</fielddescr>
+                <fieldname>rodc_username</fieldname>
+                <description>Username with previlegies to add this DC in Domain</description>
+                <type>input</type>
+                <size>40</size>
+                <default_value>Administrator</default_value>
+        </field>
+        <field>
+                <fielddescr>Password</fielddescr>
+                <fieldname>rodc_password</fieldname>
+                <description>Password for the username with previlegies to add this DC</description>
+                <type>password</type>
+                <size>40</size>
+        </field>
+        <field>
+                <name>Domain Member</name>
+                <type>listtopic</type>
+        </field>
+        <field>
+                <fielddescr>Domain</fielddescr>
+                <fieldname>member_domain</fieldname>
+                <description>Specify the domain to add this DC (i.e. test.com)</description>
+                <type>input</type>
+                <size>60</size>
+        </field>
+        <field>
+                <fielddescr>Workgroup</fielddescr>
+                <fieldname>member_workgroup</fieldname>
+                <description>Specify the domain to add this DC (i.e. TEST)</description>
+                <type>input</type>
+                <size>60</size>
+        </field>
+        <field>
+                <fielddescr>Username Administrator</fielddescr>
+                <fieldname>member_username</fieldname>
+                <description>Username with previlegies to add this DC in Domain</description>
+                <type>input</type>
+                <size>40</size>
+                <default_value>Administrator</default_value>
+        </field>
+        <field>
+                <fielddescr>Password</fielddescr>
+                <fieldname>member_password</fieldname>
+                <description>Password for the username with previlegies to add this DC</description>
+                <type>password</type>
+                <size>40</size>
+        </field>
+	</fields>
+    <custom_php_after_head_command>
+            load_jquery();
+            change_role();
+    </custom_php_after_head_command>
+	<custom_php_command_before_form>
+	</custom_php_command_before_form>
+	<custom_add_php_command>
+	</custom_add_php_command>
+    <custom_php_validation_command>
+        validate_form_samba3($_POST, $input_errors);
+    </custom_php_validation_command>
+	<custom_php_resync_config_command>
+        sync_samba3();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+	</custom_php_deinstall_command>
+	<filter_rules_needed></filter_rules_needed>
+</packagegui>

@@ -1,0 +1,12 @@
+diff -r 82c0f4c5429e squidguard_configurator.inc
+--- squidguard_configurator.inc	Tue Aug 11 13:27:06 2015 -0300
++++ squidguard_configurator.inc	Tue Aug 11 18:21:13 2015 -0300
+@@ -859,7 +859,7 @@
+     $sgconf[] = "dbhome {$squidguard_config[F_DBHOME]}";
+     if ( $squidguard_config[F_LDAPENABLE] == 'on' ) {
+         $sgconf[] = "ldapbinddn {$squidguard_config[F_LDAPBINDDN]}";
+-        $sgconf[] = "ldapbindpass {$squidguard_config[F_LDAPBINDPASS]}";
++        $sgconf[] = "ldapbindpass \"{$squidguard_config[F_LDAPBINDPASS]}\"";
+         $sgconf[] = "ldapprotover {$squidguard_config[F_LDAPVERSION]}";
+         if ( $squidguard_config[F_STRIPNTDOMAIN] )
+             $sgconf[] = "stripntdomain true";

@@ -1,0 +1,10 @@
+--- fbegin.inc  2015-07-03 16:08:58.000000000 -0300
++++ fbegin.inc.patch  2015-07-03 16:09:50.000000000 -0300
+@@ -150,6 +150,7 @@
+ $services_menu[] = array(gettext("NTP"), "/services_ntpd.php");
+ $services_menu[] = array(gettext("PPPoE Server"), "/vpn_pppoe.php");
+ $services_menu[] = array(gettext("SNMP"), "/services_snmp.php");
++$services_menu[] = array("Samba (AD)", "/pkg_edit.php?xml=samba3.xml&id=0");
+ if(count($config['interfaces']) > 1) {
+        /* no use for UPnP in single-interface deployments
+        remove to reduce user confusion

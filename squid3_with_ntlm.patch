@@ -1,0 +1,164 @@
+diff -r d5b559b2132c squid.inc
+--- squid.inc	Tue Sep 15 11:56:42 2015 -0300
++++ squid.inc	Tue Sep 15 12:18:52 2015 -0300
+@@ -731,7 +731,7 @@
+ 	}
+ 
+ 	$auth_method = $post['auth_method'];
+-	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp')) {
++	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp') && ($auth_method != 'ntlm')) {	
+ 		$server = trim($post['auth_server']);
+ 		if (empty($server))
+ 			$input_errors[] = 'The field \'Authentication server\' is required';
+@@ -1756,6 +1756,16 @@
+ 			$conf .= "auth_param basic program ". SQUID_LOCALBASE . "/libexec/squid/basic_msnt_auth\n";
+ 			squid_resync_msnt();
+ 			break;
++		case 'ntlm':
++			if ($settings['ntlmssp'] == 'on') {
++				$domain_samba4 = (($settings['ntlm_domain'] <> "") ? "--domain={$settings['ntlm_domain']} " : "");
++				$ntlm_proc = (isset($settings['ntlm_proc']) ? "{$settings['ntlm_proc']}" : "20");
++				$conf .= "auth_param ntlm program ". SQUID_LOCALBASE . "/libexec/squid/ntlm_auth " . $domain_samba4 . "--helper-protocol=squid-2.5-ntlmssp\n";
++				$conf .= "auth_param ntlm children {$ntlm_proc}\n";
++				$conf .= "auth_param ntlm keep_alive off\n";
++			}
++			$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/ntlm_auth --helper-protocol=squid-2.5-basic\n";
++			break;
+ 		}
+ 		if ($auth_method != 'cp') {
+ 		$conf .= <<< EOD
+@@ -1948,6 +1958,9 @@
+ 	document.iform.auth_ttl.disabled = 1;
+ 	document.iform.unrestricted_auth.disabled = 1;
+ 	document.iform.no_auth_hosts.disabled = 1;
++	document.iform.ntlmssp.disabled = 1;
++	document.iform.ntlm_proc.disabled = 1;
++	document.iform.ntlm_domain.disabled = 1;
+ }
+ -->
+ </script>
+@@ -1978,6 +1991,9 @@
+ 		document.iform.auth_ttl.disabled = 1;
+ 		document.iform.unrestricted_auth.disabled = 1;
+ 		document.iform.no_auth_hosts.disabled = 1;
++		document.iform.ntlmssp.disabled = 1;
++		document.iform.ntlm_proc.disabled = 1;
++		ocument.iform.ntlm_domain.disabled = 1;
+ 	} else {
+ 		document.iform.auth_prompt.disabled = 0;
+ 		document.iform.auth_processes.disabled = 0;
+@@ -1999,6 +2015,9 @@
+ 		document.iform.ldap_basedomain.disabled = 1;
+ 		document.iform.radius_secret.disabled = 1;
+ 		document.iform.msnt_secondary.disabled = 1;
++		document.iform.ntlmssp.disabled = 1;
++		document.iform.ntlm_proc.disabled = 1;
++		document.iform.ntlm_domain.disabled = 1;
+ 		break;
+ 	case 'ldap':
+ 		document.iform.auth_server.disabled = 0;
+@@ -2012,6 +2031,9 @@
+ 		document.iform.radius_secret.disabled = 1;
+ 		document.iform.msnt_secondary.disabled = 1;
+ 		document.iform.auth_ntdomain.disabled = 1;
++		document.iform.ntlmssp.disabled = 1;
++		document.iform.ntlm_proc.disabled = 1;
++		document.iform.ntlm_domain.disabled = 1;
+ 		break;
+ 	case 'radius':
+ 		document.iform.auth_server.disabled = 0;
+@@ -2025,6 +2047,9 @@
+ 		document.iform.radius_secret.disabled = 0;
+ 		document.iform.msnt_secondary.disabled = 1;
+ 		document.iform.auth_ntdomain.disabled = 1;
++		document.iform.ntlmssp.disabled = 1;
++		document.iform.ntlm_proc.disabled = 1;
++		document.iform.ntlm_domain.disabled = 1;
+ 		break;
+ 	case 'msnt':
+ 		document.iform.auth_server.disabled = 0;
+@@ -2038,6 +2063,9 @@
+ 		document.iform.ldap_basedomain.disabled = 1;
+ 		document.iform.radius_secret.disabled = 1;
+ 		document.iform.msnt_secondary.disabled = 0;
++		document.iform.ntlmssp.disabled = 1;
++		document.iform.ntlm_proc.disabled = 1;
++		document.iform.ntlm_domain.disabled = 1;
+ 		break;
+ 	case 'cp':
+ 		document.iform.auth_server.disabled = 1;
+@@ -2056,6 +2084,30 @@
+ 		document.iform.auth_ttl.disabled = 0;
+ 		document.iform.unrestricted_auth.disabled = 1;
+ 		document.iform.no_auth_hosts.disabled = 1;
++		document.iform.ntlmssp.disabled = 1;
++		document.iform.ntlm_proc.disabled = 1;
++		document.iform.ntlm_domain.disabled = 1;
++		break;
++	case 'ntlm':
++		document.iform.auth_server.disabled = 1;
++		document.iform.auth_server_port.disabled = 1;
++		document.iform.auth_ntdomain.disabled = 1;
++		document.iform.ldap_user.disabled = 1;
++		document.iform.ldap_version.disabled = 1;
++		document.iform.ldap_userattribute.disabled = 1;
++		document.iform.ldap_filter.disabled = 1;
++		document.iform.ldap_pass.disabled = 1;
++		document.iform.ldap_basedomain.disabled = 1;
++		document.iform.radius_secret.disabled = 1;
++		document.iform.msnt_secondary.disabled = 1;
++		document.iform.auth_prompt.disabled = 0;
++		document.iform.auth_processes.disabled = 0;
++		document.iform.auth_ttl.disabled = 0;
++		document.iform.unrestricted_auth.disabled = 0;
++		document.iform.no_auth_hosts.disabled = 0;
++		document.iform.ntlmssp.disabled = 0;
++		document.iform.ntlm_proc.disabled = 0;
++		document.iform.ntlm_domain.disabled = 0;
+ 		break;
+ 	}
+ }
+diff -r d5b559b2132c squid_auth.xml
+--- squid_auth.xml	Tue Sep 15 11:56:42 2015 -0300
++++ squid_auth.xml	Tue Sep 15 12:18:52 2015 -0300
+@@ -112,6 +112,7 @@
+ 				<option><name>RADIUS</name><value>radius</value></option>
+ 				<option><name>Captive Portal</name><value>cp</value></option>
+ 				<option><name>NT domain</name><value>msnt</value></option>
++				<option><name>Winbind NTLM</name><value>ntlm</value></option>
+ 			</options>
+ 			<onchange>on_auth_method_changed()</onchange>
+ 		</field>
+@@ -168,6 +169,32 @@
+ 			<encoding>base64</encoding>
+ 		</field>
+ 		<field>
++		    <name>Squid Authentication NTLM Settings</name>
++		    <type>listtopic</type>
++		</field>
++		<field>
++		    <fielddescr>NTLMSSP Negotiate</fielddescr>
++		    <fieldname>ntlmssp</fieldname>
++		    <description>Use the NTLMSSP Negotiate packet (Transparent authentication in Windows Domain)</description>
++		    <type>checkbox</type>
++		    <default_value>on</default_value>
++		</field>
++		<field>
++		    <fielddescr>NTLMSSP Auth processes</fielddescr>
++		    <fieldname>ntlm_proc</fieldname>
++		    <description>The number of authenticator processes to spawn. If many authentications are expected within a short timeframe, increase this number accordingly.</description>
++		    <type>input</type>
++		    <size>40</size>
++		    <default_value>20</default_value>
++		</field>
++		<field>
++		    <fielddescr>NTLM Default Domain</fielddescr>
++		    <fieldname>ntlm_domain</fieldname>
++		    <description>Set the default domain for use in ntlm authentication</description>
++		    <type>input</type>
++		    <size>50</size>
++		</field>		
++		<field>
+ 			<name>Squid Authentication Ldap Settings</name>
+ 			<type>listtopic</type>
+ 		</field>
