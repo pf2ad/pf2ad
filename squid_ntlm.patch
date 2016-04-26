@@ -2,33 +2,6 @@ diff --git a/squid.inc b/squid.inc
 index 3d68a9a..ea4efbc 100644
 --- squid.inc
 +++ squid.inc
-@@ -715,7 +715,7 @@ function squid_upgrade_config() {
-
- 	/* migrate reverse proxy settings */
- 	squid_reverse_upgrade_config();
--
-+
- 	/* unset broken antivirus settings */
- 	squid_antivirus_upgrade_config();
-
-@@ -793,7 +793,7 @@ function squid_validate_general($post, &$input_errors) {
- 		$input_errors[] = "You can not run Squid on the same port as the pfSense WebGUI";
- 	}
- 	unset($port, $webgui_port);
--
-+
- 	if ($post['transparent_proxy'] == 'on') {
- 		if (empty($post['transparent_active_interface'])) {
- 			$input_errors[] = "You must select at least one interface under 'Transparent Proxy Interface(s)' when 'Transparent HTTP Proxy' is enabled.";
-@@ -842,7 +842,7 @@ function squid_validate_general($post, &$input_errors) {
- 		}
- 	}
- 	unset($host, $hosts);
--
-+
- 	foreach (array('defined_ip_proxy_off_dest') as $hosts) {
- 		foreach (explode(";", $post[$hosts]) as $host) {
- 			$host = trim($host);
 @@ -1081,7 +1081,7 @@ function squid_validate_auth($post, &$input_errors) {
  	unset($num_fields);
 
