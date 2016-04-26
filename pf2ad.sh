@@ -69,8 +69,8 @@ exec;
 exit
 EOF
 
-if [ ! "$(/usr/local/sbin/pfSsh.php playback listpkg | grep 'squid')" ]; then
-	/usr/local/sbin/pfSsh.php playback installpkg "squid"
+if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
+	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
 fi
 
 cd /usr/local/pkg
