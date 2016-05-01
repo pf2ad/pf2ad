@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160415019'
+VERSION='20160501001' # Feliz dia do trabalho !
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
@@ -44,6 +44,9 @@ EOF
 /usr/sbin/pkg unlock pkg
 /usr/sbin/pkg unlock pfSense-2.3
 /usr/sbin/pkg unlock dnsmasq-devel
+
+rm -rf /usr/local/etc/pkg/repos/pf2ad.conf
+/usr/sbin/pkg update
 
 mkdir -p /var/db/samba/winbindd_privileged
 chown -R :proxy /var/db/samba/winbindd_privileged

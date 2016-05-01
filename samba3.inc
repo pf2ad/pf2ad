@@ -156,6 +156,7 @@ function samba_write_rcfile() {
         $rc['file'] = 'samba3.sh';
         $rc['start'] = <<<EOD
 if [ -z "`ps axuw | egrep "nmbd|smbd|winbindd" | grep -v 'grep' |awk '{print $2}'`" ];then
+  mkdir /var/run/samba
   /usr/local/sbin/smbd -D -s ${samba_conf}
   /usr/local/sbin/nmbd -D -s ${samba_conf}
   /usr/local/sbin/winbindd -D -s ${samba_conf}
