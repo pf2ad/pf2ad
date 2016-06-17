@@ -119,8 +119,8 @@ EOD;
    winbind nss info = rfc2307
    winbind trusted domains only = no
    winbind use default domain = yes
-   winbind enum users  = yes
-   winbind enum groups = yes
+   winbind enum users  = no
+   winbind enum groups = no
 
 EOD;
         file_put_contents(SAMBA3CONF, $smb_conf);
