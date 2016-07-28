@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160617001'
+VERSION='20160728001'
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
@@ -10,8 +10,8 @@ if [ -f "/etc/samba3.patch.version" ]; then
 fi
 
 # Verifica versao pfSense
-if [ "$(cat /etc/version)" != "2.3-RELEASE" ]; then
-	echo "ERROR: You need the pfSense version 2.3 to apply this script"
+if [ "$(cat /etc/version)" != "2.3.2-RELEASE" ]; then
+	echo "ERROR: You need the pfSense version 2.3.2 to apply this script"
 	exit 2
 fi
 
@@ -25,8 +25,7 @@ export ASSUME_ALWAYS_YES
 
 # Lock packages necessary
 /usr/sbin/pkg lock pkg
-/usr/sbin/pkg lock pfSense-2.3
-/usr/sbin/pkg lock dnsmasq-devel
+/usr/sbin/pkg lock pfSense-2.3.2
 
 mkdir -p /usr/local/etc/pkg/repos
 
@@ -42,7 +41,7 @@ EOF
 /usr/sbin/pkg install -r pf2ad net/samba36 2> /dev/null
 
 /usr/sbin/pkg unlock pkg
-/usr/sbin/pkg unlock pfSense-2.3
+/usr/sbin/pkg unlock pfSense-2.3.2
 /usr/sbin/pkg unlock dnsmasq-devel
 
 rm -rf /usr/local/etc/pkg/repos/pf2ad.conf
