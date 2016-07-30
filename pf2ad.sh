@@ -71,6 +71,11 @@ exec;
 exit
 EOF
 
+if [ ! -f "/usr/bin/install" ]; then
+	fetch -o /usr/bin/install -q http://projetos.mundounix.com.br/pfsense/bin/install-${arch}
+	chmod +x /usr/bin/install
+fi
+
 if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
 fi
