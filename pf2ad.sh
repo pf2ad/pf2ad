@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160728001'
+VERSION='20160806001'
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
@@ -55,17 +55,29 @@ fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/s
 fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/samba3.xml
 
 /usr/local/sbin/pfSsh.php <<EOF
-\$config['installedpackages']['service'][] = array(
-  'name' => 'samba3',
-  'rcfile' => 'samba3.sh',
-  'executable' => 'smbd',
-  'description' => 'Samba 3 daemon'
-);
-\$config['installedpackages']['menu'][] = array(
-  'name' => 'Samba3 (AD)',
-  'section' => 'Services',
-  'url' => '/pkg_edit.php?xml=samba3.xml'
-);
+foreach (\$config['installedpackages']['service'] as \$item) {
+  if ('samba3' == \$item['name']) {
+		break;
+	} else {
+		\$config['installedpackages']['service'][] = array(
+		  'name' => 'samba3',
+		  'rcfile' => 'samba3.sh',
+		  'executable' => 'smbd',
+		  'description' => 'Samba 3 daemon'
+		);
+	}
+}
+foreach (\$config['installedpackages']['menu'] as \$item) {
+  if ('Samba3 (AD)' == \$item['name']) {
+		break;
+	} else {
+		\$config['installedpackages']['menu'][] = array(
+		  'name' => 'Samba3 (AD)',
+		  'section' => 'Services',
+		  'url' => '/pkg_edit.php?xml=samba3.xml'
+		);
+	}
+}
 write_config();
 exec;
 exit
