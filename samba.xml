@@ -45,29 +45,29 @@
     <description>Describe your package here</description>
     <requirements>Describe your package requirements here</requirements>
     <faq>Currently there are no FAQ items provided.</faq>
-	<name>samba3</name>
-	<version>3.6.25_3</version>
+	<name>samba</name>
+	<version>4.4</version>
 	<title>Samba is a Active Directory compatible Domain Controller</title>
-	<include_file>/usr/local/pkg/samba3.inc</include_file>
+	<include_file>/usr/local/pkg/samba.inc</include_file>
 	<tabs>
 		<tab>
 			<text>General Settings</text>
-			<url>/pkg_edit.php?xml=samba3.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=samba.xml&amp;id=0</url>
 			<active/>
 		</tab>
 	</tabs>
 	<fields>
     <field>
       <fielddescr>Enable</fielddescr>
-      <fieldname>samba3enable</fieldname>
-      <description>Enable Samba3 service.</description>
+      <fieldname>samba_enable</fieldname>
+      <description>Enable Samba service.</description>
       <type>checkbox</type>
       <enablefields>interface,member_domain,member_workgroup,member_username,member_password</enablefields>
     </field>
     <field>
       <fielddescr>Listen interface</fielddescr>
       <fieldname>interface</fieldname>
-      <description>The interface(s) the Samba3 service will bind to.</description>
+      <description>The interface(s) the Samba service will bind to.</description>
       <type>interfaces_selection</type>
       <default_value>lan</default_value>
       <multiple/>
@@ -113,10 +113,10 @@
 	<custom_add_php_command>
 	</custom_add_php_command>
     <custom_php_validation_command>
-        validate_form_samba3($_POST, $input_errors);
+        validate_form_samba($_POST, $input_errors);
     </custom_php_validation_command>
 	<custom_php_resync_config_command>
-        sync_samba3();
+        sync_samba();
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
 	</custom_php_install_command>
