@@ -47,7 +47,7 @@ function sync_samba() {
 
     if (is_array($config['installedpackages']['samba'])) {
       $settings = $config['installedpackages']['samba']['config'][0];
-		  if ($settings['samba3enable'] == "on") {
+		  if ($settings['samba_enable'] == "on") {
         $domain = strtoupper($settings['member_domain']);
         $workgroup = strtoupper($settings['member_workgroup']);
         $username = $settings['member_username'];
@@ -103,7 +103,7 @@ EOD;
         file_put_contents(SAMBACONF, $smb_conf);
         samba_write_rcfile();
         $ret = exec_command("/usr/local/bin/net ads join -U '" . $username . "%" . $adminpass . "'");
-        if ($ret contem "Joined") {
+        if (strpos($ret[0], 'Joined') !== false) {
           if (!is_service_running('smbd')) {
             log_error("Starting Samba");
             mwexec("/usr/local/etc/rc.d/samba.sh start");
