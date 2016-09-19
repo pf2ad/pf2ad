@@ -31,7 +31,7 @@ mkdir -p /usr/local/etc/pkg/repos
 
 cat <<EOF > /usr/local/etc/pkg/repos/pf2ad.conf
 pf2ad: {
-    url: "https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/packages/${arch}",
+    url: "https://pkg.mundounix.com.br/pfsense/packages/${arch}",
     mirror_type: "https",
     enabled: yes
 }
