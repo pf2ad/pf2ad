@@ -49,31 +49,56 @@ function sync_samba() {
       $settings = $config['installedpackages']['samba']['config'][0];
 		  if ($settings['samba_enable'] == "on") {
         $domain = strtoupper($settings['member_domain']);
+        $domain_low = strtolower($settings['member_domain']);
         $workgroup = strtoupper($settings['member_workgroup']);
         $username = $settings['member_username'];
         $adminpass = $settings['member_password'];
         $hostip = get_real_interface_address($settings['interface']);
         $krb_conf = <<<EOD
 [logging]
-     default = FILE:/var/log/krb5libs.log
-     kdc = FILE:/var/log/krb5kdc.log
-     admin_server = FILE:/var/log/kadmind.log
+    default = FILE:/var/log/krb5libs.log
+    kdc = FILE:/var/log/krb5kdc.log
+    admin_server = FILE:/var/log/kadmind.log
 
 [libdefaults]
-     default_realm = $domain
-     dns_lookup_realm = true
-     dns_lookup_kdc = true
-     ticket_lifetime = 24h
-     forwardable = yes
+    default_realm = $domain
+    dns_lookup_realm = true
+    dns_lookup_kdc = true
+    ticket_lifetime = 24h
+    forwardable = yes
+
+EOD;
+if ($settings['samba_windows'] == 'win2003') {
+  $krb_conf += <<<EOD
+; for Windows 2003
+    default_tgs_enctypes = rc4-hmac des-cbc-crc des-cbc-md5
+    default_tkt_enctypes = rc4-hmac des-cbc-crc des-cbc-md5
+    permitted_enctypes = rc4-hmac des-cbc-crc des-cbc-md5
+EOD;
+}
+if ($settings['samba_windows'] == 'win2008') {
+  $krb_conf += <<<EOD
+; for Windows 2008 with AES
+    default_tgs_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5
+    default_tkt_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5
+    permitted_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5
+EOD;
+}
+
+$krb_conf += <<<EOD    
 
 [appdefaults]
-     pam = {
-          debug = false
-          ticket_lifetime = 36000
-          renew_lifetime = 36000
-          forwardable = true
-          krb4_convert = false
-     }
+    pam = {
+        debug = false
+        ticket_lifetime = 36000
+        renew_lifetime = 36000
+        forwardable = true
+        krb4_convert = false
+    }
+
+[domain_realm]
+    .$domain_low = $domain
+    $domain_low = $domain
 
 EOD;
         file_put_contents('/etc/krb5.conf', $krb_conf);
@@ -105,8 +130,13 @@ EOD;
         $ret = exec_command("/usr/local/bin/net ads join -U '" . $username . "%" . $adminpass . "'");
         if (strpos($ret[0], 'Joined') !== false) {
           if (!is_service_running('smbd')) {
+            sleep(2);
             log_error("Starting Samba");
             mwexec("/usr/local/etc/rc.d/samba.sh start");
+            // Create key tab file (kerberos)
+            mwexec("/usr/local/bin/net ads keytab create -U '" . $username . "%" . $adminpass . "'");
+            mwexec("/usr/sbin/chown :proxy /etc/krb5.keytab");
+            mwexec("/usr/sbin/chmod 0750 /etc/krb5.keytab");
           } else {
             log_error("Reloading Samba for configuration sync");
             mwexec("/usr/local/etc/rc.d/samba.sh stop");
