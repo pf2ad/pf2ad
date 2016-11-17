@@ -129,7 +129,7 @@ EOD;
         samba_write_rcfile();
         $ret = exec_command("/usr/local/bin/net ads join -U '" . $username . "%" . $adminpass . "'");
         if (strpos($ret[0], 'Joined') !== false) {
-          if (!is_service_running('smbd')) {
+          if (!is_service_running('samba')) {
             sleep(2);
             log_error("Starting Samba");
             mwexec("/usr/local/etc/rc.d/samba.sh start");
