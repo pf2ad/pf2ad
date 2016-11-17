@@ -85,7 +85,7 @@ if ($settings['samba_windows'] == 'win2008') {
 EOD;
 }
 
-$krb_conf += <<<EOD    
+$krb_conf += <<<EOD
 
 [appdefaults]
     pam = {
