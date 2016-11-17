@@ -133,10 +133,6 @@ EOD;
             sleep(2);
             log_error("Starting Samba");
             mwexec("/usr/local/etc/rc.d/samba.sh start");
-            // Create key tab file (kerberos)
-            mwexec("/usr/local/bin/net ads keytab create -U '" . $username . "%" . $adminpass . "'");
-            mwexec("/usr/sbin/chown :proxy /etc/krb5.keytab");
-            mwexec("/usr/sbin/chmod 0750 /etc/krb5.keytab");
           } else {
             log_error("Reloading Samba for configuration sync");
             mwexec("/usr/local/etc/rc.d/samba.sh stop");
@@ -152,6 +148,12 @@ EOD;
           mwexec("/usr/local/etc/rc.d/samba.sh stop");
           mwexec("rm -rf /usr/local/etc/rc.d/samba.sh");
         }
+      }
+      // Create key tab file (kerberos)
+      if (!file_exists('/etc/krb5.keytab')) {
+        mwexec("/usr/local/bin/net ads keytab create -U '" . $username . "%" . $adminpass . "'");
+        mwexec("/usr/sbin/chown :proxy /etc/krb5.keytab");
+        mwexec("/usr/sbin/chmod 0750 /etc/krb5.keytab");
       }
     }
 }
