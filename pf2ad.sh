@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20161117012'
+VERSION='20161118001'
 
 if [ -f "/etc/samba.patch.version" ]; then
 	if [ "$(cat /etc/samba.patch.version)" = "$VERSION" ]; then
@@ -96,7 +96,10 @@ fi
 if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
 fi
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/squid.xml
+cd /usr/local/pkg
+if ! fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/squid_winbind_auth.patch | patch -p0 --dry-run -t | grep "Reversed"; then
+    fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/squid_winbind_auth.patch | patch -b -p0
+fi
 fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/squid.inc
 
 if [ ! -f "/usr/local/etc/smb4.conf" ]; then
