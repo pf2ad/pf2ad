@@ -1,21 +1,20 @@
 diff --git a/squid.inc b/squid.inc
-index 3d68a9a..ea4efbc 100644
+index 36de09a..9522422 100644
 --- squid.inc
 +++ squid.inc
-@@ -1081,7 +1081,7 @@ function squid_validate_auth($post, &$input_errors) {
+@@ -1091,7 +1091,7 @@ function squid_validate_auth($post, &$input_errors) {
  	unset($num_fields);
-
+ 
  	$auth_method = $post['auth_method'];
 -	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp')) {
 +	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp') && ($auth_method != 'ntlm')) {
  		$server = trim($post['auth_server']);
  		if (empty($server)) {
  			$input_errors[] = "'Authentication server' is required.";
-@@ -1870,6 +1870,17 @@ function squid_resync_auth() {
- 				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_msnt_auth\n";
- 				squid_resync_msnt();
+@@ -1891,6 +1891,16 @@ function squid_resync_auth() {
+ 				$conf .= "external_acl_type check_cp {$helpers_num} ttl={$auth_ttl} %SRC " . SQUID_BASE . "/bin/check_ip.php\n";
+ 				$conf .= "acl password external check_cp\n";
  				break;
-+				break;
 +			case 'ntlm':
 +				if ($settings['ntlmssp'] == 'on') {
 +					$domain_samba4 = (($settings['ntlm_domain'] <> "") ? "--domain={$settings['ntlm_domain']} " : "");
@@ -30,21 +29,22 @@ index 3d68a9a..ea4efbc 100644
  		if ($auth_method != 'cp') {
  		$conf .= <<< EOD
 diff --git a/squid_auth.xml b/squid_auth.xml
-index e0f2b7b..08b6ae8 100644
+index 2453bde..e714473 100644
 --- squid_auth.xml
 +++ squid_auth.xml
-@@ -105,6 +105,7 @@
+@@ -104,6 +104,7 @@
+ 				<option><name>LDAP</name><value>ldap</value></option>
  				<option><name>RADIUS</name><value>radius</value></option>
  				<option><name>Captive Portal</name><value>cp</value></option>
- 				<option><name>NT Domain</name><value>msnt</value></option>
 +				<option><name>Winbind NTLM</name><value>ntlm</value></option>
  			</options>
  			<onchange>on_auth_method_changed()</onchange>
  		</field>
-@@ -180,6 +181,32 @@
+@@ -178,6 +179,32 @@
+ 			<rows>5</rows>
  			<encoding>base64</encoding>
  		</field>
- 		<field>
++ 		<field>
 +		    <name>Squid Authentication NTLM Settings</name>
 +		    <type>listtopic</type>
 +		</field>
@@ -69,11 +69,10 @@ index e0f2b7b..08b6ae8 100644
 +		    <description>Set the default domain for use in ntlm authentication</description>
 +		    <type>input</type>
 +		    <size>50</size>
-+		</field>
-+		<field>
++		</field>		
+ 		<field>
  			<name>Squid Authentication LDAP Settings</name>
  			<type>listtopic</type>
- 		</field>
 diff --git a/squid_js.inc b/squid_js.inc
 index 33f1923..655428b 100644
 --- squid_js.inc
