@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20160617001'
+VERSION='20161228001' # Happy new year 2017 !
 
 if [ -f "/etc/samba3.patch.version" ]; then
 	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
@@ -10,8 +10,8 @@ if [ -f "/etc/samba3.patch.version" ]; then
 fi
 
 # Verifica versao pfSense
-if [ "$(cat /etc/version)" != "2.3-RELEASE" ]; then
-	echo "ERROR: You need the pfSense version 2.3 to apply this script"
+if [ "$(cat /etc/version)" != "2.3.2-RELEASE" ]; then
+	echo "ERROR: You need the pfSense version 2.3.2 to apply this script"
 	exit 2
 fi
 
@@ -25,8 +25,7 @@ export ASSUME_ALWAYS_YES
 
 # Lock packages necessary
 /usr/sbin/pkg lock pkg
-/usr/sbin/pkg lock pfSense-2.3
-/usr/sbin/pkg lock dnsmasq-devel
+/usr/sbin/pkg lock pfSense-2.3.2
 
 mkdir -p /usr/local/etc/pkg/repos
 
@@ -42,7 +41,7 @@ EOF
 /usr/sbin/pkg install -r pf2ad net/samba36 2> /dev/null
 
 /usr/sbin/pkg unlock pkg
-/usr/sbin/pkg unlock pfSense-2.3
+/usr/sbin/pkg unlock pfSense-2.3.2
 /usr/sbin/pkg unlock dnsmasq-devel
 
 rm -rf /usr/local/etc/pkg/repos/pf2ad.conf
@@ -56,21 +55,44 @@ fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/s
 fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/samba3.xml
 
 /usr/local/sbin/pfSsh.php <<EOF
-\$config['installedpackages']['service'][] = array(
-  'name' => 'samba3',
-  'rcfile' => 'samba3.sh',
-  'executable' => 'smbd',
-  'description' => 'Samba 3 daemon'
-);
-\$config['installedpackages']['menu'][] = array(
-  'name' => 'Samba3 (AD)',
-  'section' => 'Services',
-  'url' => '/pkg_edit.php?xml=samba3.xml'
-);
+\$samba3 = false;
+foreach (\$config['installedpackages']['service'] as \$item) {
+  if ('samab3' == \$item['name']) {
+    \$samba3 = true;
+    break;
+  }
+}
+if (\$samba3 == false) {
+	\$config['installedpackages']['service'][] = array(
+	  'name' => 'samba3',
+	  'rcfile' => 'samba3.sh',
+	  'executable' => 'smbd',
+	  'description' => 'Samba 3 daemon'
+  );
+}
+\$samba3 = false;
+foreach (\$config['installedpackages']['menu'] as \$item) {
+  if ('Samba3 (AD)' == \$item['name']) {
+    \$samba3 = true;
+    break;
+  }
+}
+if (\$samba3 == false) {
+  \$config['installedpackages']['menu'][] = array(
+    'name' => 'Samba3 (AD)',
+    'section' => 'Services',
+    'url' => '/pkg_edit.php?xml=samba3.xml'
+  );
+}
 write_config();
 exec;
 exit
 EOF
+
+if [ ! -f "/usr/bin/install" ]; then
+	fetch -o /usr/bin/install -q http://projetos.mundounix.com.br/pfsense/bin/install-${arch}
+	chmod +x /usr/bin/install
+fi
 
 if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
