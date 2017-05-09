@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20161229005' # Happy new year 2017 !
+VERSION='20170905001'
 
 if [ -f "/etc/samba.patch.version" ]; then
 	if [ "$(cat /etc/samba.patch.version)" = "$VERSION" ]; then
@@ -10,8 +10,8 @@ if [ -f "/etc/samba.patch.version" ]; then
 fi
 
 # Verifica versao pfSense
-if [ "$(cat /etc/version)" != "2.3.2-RELEASE" ]; then
-	echo "ERROR: You need the pfSense version 2.3.2 to apply this script"
+if [ "$(cat /etc/version)" != "2.3.4-RELEASE" ]; then
+	echo "ERROR: You need the pfSense version 2.3.4 to apply this script"
 	exit 2
 fi
 
@@ -25,7 +25,7 @@ export ASSUME_ALWAYS_YES
 
 # Lock packages necessary
 /usr/sbin/pkg lock pkg
-/usr/sbin/pkg lock pfSense-2.3.2
+/usr/sbin/pkg lock pfSense-2.3.4
 
 mkdir -p /usr/local/etc/pkg/repos
 
@@ -41,7 +41,7 @@ EOF
 /usr/sbin/pkg install -r pf2ad net/samba44 2> /dev/null
 
 /usr/sbin/pkg unlock pkg
-/usr/sbin/pkg unlock pfSense-2.3.2
+/usr/sbin/pkg unlock pfSense-2.3.4
 
 rm -rf /usr/local/etc/pkg/repos/pf2ad.conf
 /usr/sbin/pkg update
@@ -50,8 +50,8 @@ mkdir -p /var/db/samba4/winbindd_privileged
 chown -R :proxy /var/db/samba4/winbindd_privileged
 chmod -R 0750 /var/db/samba4/winbindd_privileged
 
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/samba.inc
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/samba.xml
+fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/samba.inc
+fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/samba.xml
 
 /usr/local/sbin/pfSsh.php <<EOF
 \$samba = false;
@@ -97,10 +97,10 @@ if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
 fi
 cd /usr/local/pkg
-if ! fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/squid_winbind_auth.patch | patch -p0 --dry-run -t | grep "Reversed"; then
-    fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/squid_winbind_auth.patch | patch -b -p0
+if ! fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid_winbind_auth.patch | patch -p0 --dry-run -t | grep "Reversed"; then
+    fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid_winbind_auth.patch | patch -b -p0
 fi
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.2-samba4/samba/squid.inc
+fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid.inc
 
 if [ ! -f "/usr/local/etc/smb4.conf" ]; then
 	touch /usr/local/etc/smb4.conf
