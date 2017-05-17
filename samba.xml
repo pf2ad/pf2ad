@@ -81,6 +81,17 @@
       <type>listtopic</type>
     </field>
     <field>
+      <fielddescr>AD Server Version</fielddescr>
+      <fieldname>ad_version</fieldname>
+      <description>Specify the version of AD Server</description>
+      <type>select</type>
+			<options>
+				<option><name>Windows 2003 +</name><value>win2003</value></option>
+				<option><name>Windows 2008 +</name><value>win2008</value></option>
+        <option><name>Samba4+</name><value>win2008</value></option>
+      </options>
+    </field>    
+    <field>
       <fielddescr>Domain</fielddescr>
       <fieldname>member_domain</fieldname>
       <description>Specify the domain to add this DC (i.e. test.com)</description>

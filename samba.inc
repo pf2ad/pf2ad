@@ -68,7 +68,7 @@ function sync_samba() {
     forwardable = yes
 
 EOD;
-if ($settings['samba_windows'] == 'win2003') {
+if ($settings['ad_version'] == 'win2003') {
   $krb_conf += <<<EOD
 ; for Windows 2003
     default_tgs_enctypes = rc4-hmac des-cbc-crc des-cbc-md5
@@ -76,7 +76,7 @@ if ($settings['samba_windows'] == 'win2003') {
     permitted_enctypes = rc4-hmac des-cbc-crc des-cbc-md5
 EOD;
 }
-if ($settings['samba_windows'] == 'win2008') {
+if ($settings['ad_version'] == 'win2008') {
   $krb_conf += <<<EOD
 ; for Windows 2008 with AES
     default_tgs_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5
@@ -153,7 +153,7 @@ EOD;
       if (!file_exists('/etc/krb5.keytab')) {
         mwexec("/usr/local/bin/net ads keytab create -U '" . $username . "%" . $adminpass . "'");
         mwexec("/usr/sbin/chown :proxy /etc/krb5.keytab");
-        mwexec("/usr/sbin/chmod 0750 /etc/krb5.keytab");
+        mwexec("/bin/chmod 0750 /etc/krb5.keytab");
       }
     }
 }
