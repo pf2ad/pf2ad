@@ -97,9 +97,7 @@ if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
 fi
 cd /usr/local/pkg
-if ! "$(fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid_winbind_auth.patch | patch -p0 --dry-run -t | grep Reversed)"; then
-    fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid_winbind_auth.patch | patch -b -p0
-fi
+fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid_winbind_auth.patch | patch -b -p0 -f
 fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid.inc
 
 if [ ! -f "/usr/local/etc/smb4.conf" ]; then
