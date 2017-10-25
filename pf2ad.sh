@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20171017001' 
+VERSION='20171025001' 
 
 if [ -f "/etc/samba.patch.version" ]; then
 	if [ "$(cat /etc/samba.patch.version)" = "$VERSION" ]; then
@@ -10,8 +10,8 @@ if [ -f "/etc/samba.patch.version" ]; then
 fi
 
 # Verifica versao pfSense
-if [ "$(cat /etc/version)" != "2.4.0-RELEASE" ]; then
-	echo "ERROR: You need the pfSense version 2.4 to apply this script"
+if [ "$(cat /etc/version)" != "2.4.1-RELEASE" ]; then
+	echo "ERROR: You need the pfSense version 2.4.1 to apply this script"
 	exit 2
 fi
 
@@ -23,7 +23,7 @@ export ASSUME_ALWAYS_YES
 
 # Lock packages necessary
 /usr/sbin/pkg lock pkg
-/usr/sbin/pkg lock pfSense-2.4.0
+/usr/sbin/pkg lock pfSense-2.4.1
 
 mkdir -p /usr/local/etc/pkg/repos
 
@@ -39,7 +39,7 @@ EOF
 /usr/sbin/pkg install -r pf2ad net/samba44 2> /dev/null
 
 /usr/sbin/pkg unlock pkg
-/usr/sbin/pkg unlock pfSense-2.4.0
+/usr/sbin/pkg unlock pfSense-2.4.1
 
 rm -rf /usr/local/etc/pkg/repos/pf2ad.conf
 /usr/sbin/pkg update
@@ -48,8 +48,8 @@ mkdir -p /var/db/samba4/winbindd_privileged
 chown -R :proxy /var/db/samba4/winbindd_privileged
 chmod -R 0750 /var/db/samba4/winbindd_privileged
 
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.4/samba/samba.inc
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.4/samba/samba.xml
+fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.4.1/samba/samba.inc
+fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.4.1/samba/samba.xml
 
 /usr/local/sbin/pfSsh.php <<EOF
 \$samba = false;
@@ -91,8 +91,8 @@ if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
 fi
 cd /usr/local/pkg
-fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.4/samba/squid_winbind_auth.patch | patch -b -p0 -f
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.4/samba/squid.inc
+fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.4.1/samba/squid_winbind_auth.patch | patch -b -p0 -f
+fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.4.1/samba/squid.inc
 
 if [ ! -f "/usr/local/etc/smb4.conf" ]; then
 	touch /usr/local/etc/smb4.conf
