@@ -77,6 +77,16 @@
       <multiple/>
     </field>
     <field>
+      <fielddescr>Active Directory Type</fielddescr>
+      <fieldname>ad_version</fieldname>
+      <type>select</type>
+        <options>
+             <option><name>Windows 2003</name><value>win2003</value></option>
+             <option><name>Windows 2008 +</name><value>win2008</value></option>
+        </options>
+      <default_value>win2003</default_value>
+    </field>
+    <field>
       <name>Domain Member Settings</name>
       <type>listtopic</type>
     </field>
