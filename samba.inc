@@ -69,7 +69,7 @@ function sync_samba() {
 
 EOD;
 if ($settings['ad_version'] == 'win2003') {
-  $krb_conf += <<<EOD
+  $krb_conf .= <<<EOD
 ; for Windows 2003
     default_tgs_enctypes = rc4-hmac des-cbc-crc des-cbc-md5
     default_tkt_enctypes = rc4-hmac des-cbc-crc des-cbc-md5
@@ -77,7 +77,7 @@ if ($settings['ad_version'] == 'win2003') {
 EOD;
 }
 if ($settings['ad_version'] == 'win2008') {
-  $krb_conf += <<<EOD
+  $krb_conf .= <<<EOD
 ; for Windows 2008 with AES
     default_tgs_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5
     default_tkt_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5
@@ -85,7 +85,7 @@ if ($settings['ad_version'] == 'win2008') {
 EOD;
 }
 
-$krb_conf += <<<EOD
+$krb_conf .= <<<EOD
 
 [appdefaults]
     pam = {
