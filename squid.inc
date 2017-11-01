@@ -1914,7 +1914,7 @@ function squid_resync_auth() {
 				if ($settings['ntlmssp'] == 'on') {
 					$domain_samba4 = (($settings['ntlm_domain'] <> "") ? "--domain={$settings['ntlm_domain']} " : "");
 					$ntlm_proc = (isset($settings['ntlm_proc']) ? "{$settings['ntlm_proc']}" : "20");
-					$conf .= "auth_param negotiate program ". SQUID_LOCALBASE . "/libexec/squid/negotiate_wrapper_auth --ntlm ". SQUID_LOCALBASE ."/libexec/squid/ntlm_auth ". $domain_samba4 ."--helper-protocol=squid-2.5-ntlmssp --kerberos ". SQUID_LOCALBASE ."/libexec/squid/negotiate_kerberos_auth -s GSS_C_NOME\n";
+					$conf .= "auth_param negotiate program ". SQUID_LOCALBASE . "/libexec/squid/negotiate_wrapper_auth --ntlm ". SQUID_LOCALBASE ."/libexec/squid/ntlm_auth ". $domain_samba4 ."--helper-protocol=squid-2.5-ntlmssp --kerberos ". SQUID_LOCALBASE ."/libexec/squid/negotiate_kerberos_auth -s GSS_C_NO_NAME\n";
 					$conf .= "auth_param negotiate children {$ntlm_proc}\n";
 					$conf .= "auth_param negotiate keep_alive off\n";
 					$conf .= "# Pure NTLM\n";	
