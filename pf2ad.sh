@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20170810001' 
+VERSION='20171101001' 
 
 if [ -f "/etc/samba.patch.version" ]; then
 	if [ "$(cat /etc/samba.patch.version)" = "$VERSION" ]; then
@@ -10,8 +10,8 @@ if [ -f "/etc/samba.patch.version" ]; then
 fi
 
 # Verifica versao pfSense
-if [ "$(cat /etc/version)" != "2.3.4-RELEASE" ]; then
-	echo "ERROR: You need the pfSense version 2.3.4 to apply this script"
+if [ "$(cat /etc/version)" != "2.3.5-RELEASE" ]; then
+	echo "ERROR: You need the pfSense version 2.3.5 to apply this script"
 	exit 2
 fi
 
@@ -25,7 +25,7 @@ export ASSUME_ALWAYS_YES
 
 # Lock packages necessary
 /usr/sbin/pkg lock pkg
-/usr/sbin/pkg lock pfSense-2.3.4
+/usr/sbin/pkg lock pfSense-2.3.5
 
 mkdir -p /usr/local/etc/pkg/repos
 
@@ -50,8 +50,8 @@ mkdir -p /var/db/samba4/winbindd_privileged
 chown -R :proxy /var/db/samba4/winbindd_privileged
 chmod -R 0750 /var/db/samba4/winbindd_privileged
 
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/samba.inc
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/samba.xml
+fetch -o /usr/local/pkg -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.5-SAMBA4/samba/samba.inc
+fetch -o /usr/local/pkg -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.5-SAMBA4/samba.xml
 
 /usr/local/sbin/pfSsh.php <<EOF
 \$samba = false;
@@ -88,17 +88,12 @@ exec;
 exit
 EOF
 
-if [ ! -f "/usr/bin/install" ]; then
-	fetch -o /usr/bin/install -q http://projetos.mundounix.com.br/pfsense/bin/install-${arch}
-	chmod +x /usr/bin/install
-fi
-
 if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 	/usr/sbin/pkg install -r pfSense pfSense-pkg-squid
 fi
 cd /usr/local/pkg
-fetch -o - -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid_winbind_auth.patch | patch -b -p0 -f
-fetch -o /usr/local/pkg -q https://pkg.mundounix.com.br/pfsense/2.3.4-samba4/samba/squid.inc
+fetch -o - -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.5-SAMBA4/squid_winbind_auth.patch | patch -b -p0 -f
+fetch -o /usr/local/pkg -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.5-SAMBA4/samba/squid.inc
 
 if [ ! -f "/usr/local/etc/smb4.conf" ]; then
 	touch /usr/local/etc/smb4.conf
