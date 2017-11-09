@@ -2,7 +2,7 @@
 
 The script is automatic, meaning you need not install anything, he will have to check the necessary dependencies and install the needed.
 
-To make the application of change patches and NTLM authentication setting in pfSense® software, we will need version 2.3.5 of pfSense® software (amd64 or i386). Remember that this version is compatible (will install if you have not) with Squid package, you will need web access or console (recommend using the console via ssh to monitor the process).
+To make the application of change patches and NTLM authentication setting in pfSense® software, we will need version 2.3.4 of pfSense® software (amd64 or i386). Remember that this version is compatible (will install if you have not) with Squid package, you will need web access or console (recommend using the console via ssh to monitor the process).
 
 ```
 fetch -q -o - https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.4-SAMBA4/pf2ad.sh | sh
