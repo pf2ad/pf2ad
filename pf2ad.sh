@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20171101001' 
+VERSION='20171109002' 
 
 if [ -f "/etc/samba.patch.version" ]; then
 	if [ "$(cat /etc/samba.patch.version)" = "$VERSION" ]; then
@@ -31,7 +31,7 @@ mkdir -p /usr/local/etc/pkg/repos
 
 cat <<EOF > /usr/local/etc/pkg/repos/pf2ad.conf
 pf2ad: {
-    url: "https://pkg.mundounix.com.br/pfsense/packages/${arch}",
+    url: "https://github.com/pf2ad/packages/raw/10.3/${arch}",
     mirror_type: "https",
     enabled: yes
 }
@@ -41,7 +41,7 @@ EOF
 /usr/sbin/pkg install -r pf2ad net/samba44 2> /dev/null
 
 /usr/sbin/pkg unlock pkg
-/usr/sbin/pkg unlock pfSense-2.3.4
+/usr/sbin/pkg unlock pfSense-2.3.5
 
 rm -rf /usr/local/etc/pkg/repos/pf2ad.conf
 /usr/sbin/pkg update
