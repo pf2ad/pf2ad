@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION='20171101003' 
+VERSION='20171109001' 
 
 if [ -f "/etc/samba.patch.version" ]; then
 	if [ "$(cat /etc/samba.patch.version)" = "$VERSION" ]; then
@@ -31,7 +31,7 @@ mkdir -p /usr/local/etc/pkg/repos
 
 cat <<EOF > /usr/local/etc/pkg/repos/pf2ad.conf
 pf2ad: {
-    url: "https://pkg.mundounix.com.br/pfsense/packages/${arch}",
+    url: "https://github.com/pf2ad/packages/raw/10.3/${arch}",
     mirror_type: "https",
     enabled: yes
 }
