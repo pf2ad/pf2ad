@@ -31,7 +31,7 @@ mkdir -p /usr/local/etc/pkg/repos
 
 cat <<EOF > /usr/local/etc/pkg/repos/pf2ad.conf
 pf2ad: {
-    url: "https://github.com/pf2ad/packages/raw/10.3/${arch}",
+    url: "https://github.com/pf2ad/packages/raw/10.3-SAMBA36/${arch}",
     mirror_type: "http",
     enabled: yes
 }
@@ -51,8 +51,8 @@ mkdir -p /var/db/samba/winbindd_privileged
 chown -R :proxy /var/db/samba/winbindd_privileged
 chmod -R 0750 /var/db/samba/winbindd_privileged
 
-fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/samba3.inc
-fetch -o /usr/local/pkg -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/samba3.xml
+fetch -o /usr/local/pkg -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.2-RELEASE/samba3.inc
+fetch -o /usr/local/pkg -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.2-RELEASE/samba3.xml
 
 /usr/local/sbin/pfSsh.php <<EOF
 \$samba3 = false;
@@ -90,7 +90,7 @@ exit
 EOF
 
 if [ ! -f "/usr/bin/install" ]; then
-	fetch -o /usr/bin/install -q http://projetos.mundounix.com.br/pfsense/bin/install-${arch}
+	fetch -o /usr/bin/install -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.2-RELEASE/install-${arch}
 	chmod +x /usr/bin/install
 fi
 
@@ -99,8 +99,8 @@ if [ ! "$(/usr/sbin/pkg info | grep pfSense-pkg-squid)" ]; then
 fi
 
 cd /usr/local/pkg
-if ! fetch -o - -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/squid_ntlm.patch | patch -p0 --dry-run -t | grep "Reversed"; then
-    fetch -o - -q http://projetos.mundounix.com.br/pfsense/2.3/samba3/squid_ntlm.patch | patch -b -p0
+if ! fetch -o - -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.2-RELEASE/squid_ntlm.patch | patch -p0 --dry-run -t | grep "Reversed"; then
+    fetch -o - -q https://raw.githubusercontent.com/pf2ad/pf2ad/2.3.2-RELEASE/squid_ntlm.patch | patch -b -p0
 fi
 
 if [ ! -f "/usr/local/etc/smb.conf" ]; then
@@ -110,4 +110,4 @@ cp -f /usr/local/bin/ntlm_auth /usr/local/libexec/squid/ntlm_auth
 
 /etc/rc.d/ldconfig restart
 
-echo "$VERSION" > /etc/samba3.patch.version
+echo "$VERSION" > /etc/pf2ad.patch.version
