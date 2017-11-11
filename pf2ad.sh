@@ -1,9 +1,9 @@
 #!/bin/sh
 
-VERSION='20161228010' # Happy new year 2017 !
+VERSION='20171111001' # 11.11 version of demo !!! \ôô/
 
-if [ -f "/etc/samba3.patch.version" ]; then
-	if [ "$(cat /etc/samba3.patch.version)" = "$VERSION" ]; then
+if [ -f "/etc/pf2ad.patch.version" ]; then
+	if [ "$(cat /etc/pf2ad.patch.version)" = "$VERSION" ]; then
 		echo "ERROR: Changes have been applied!"
 		exit 2
 	fi
@@ -31,7 +31,7 @@ mkdir -p /usr/local/etc/pkg/repos
 
 cat <<EOF > /usr/local/etc/pkg/repos/pf2ad.conf
 pf2ad: {
-    url: "http://projetos.mundounix.com.br/pfsense/2.3/packages/${arch}",
+    url: "https://github.com/pf2ad/packages/raw/10.3/${arch}",
     mirror_type: "http",
     enabled: yes
 }
