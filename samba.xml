@@ -55,10 +55,6 @@
 			<url>/pkg_edit.php?xml=samba.xml&amp;id=0</url>
 			<active/>
 		</tab>
-    <tab>
-			<text>Diagnostics</text>
-			<url>/pkg_edit.php?xml=samba_diag.xml&amp;id=0</url>
-		</tab>
 	</tabs>
 	<fields>
     <field>
