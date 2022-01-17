@@ -13,4 +13,4 @@ It will upgrade the system package, add a custom repository with samba version w
 
 More information:
 
-<http://pf2ad.mundounix.com.br/en/index.html>
+<https://pf2ad.com>
